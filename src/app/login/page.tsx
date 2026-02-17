@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
+import { toast } from 'react-toastify'
 
 export default async function Login() {
   const supabase = await createClient()
@@ -30,6 +31,7 @@ export default async function Login() {
     })
 
     if(error){
+      toast.error("Something went wrong while logging in")
       console.error(error)
     }
 

@@ -4,6 +4,7 @@ import { Bookmark } from '@/types'
 import { Trash2, ExternalLink } from 'lucide-react'
 import { createClient } from '@/utils/supabase/client'
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 
 export function BookmarkItem({ bookmark }: { bookmark: Bookmark }) {
   const [isDeleting, setIsDeleting] = useState(false)
@@ -17,6 +18,7 @@ export function BookmarkItem({ bookmark }: { bookmark: Bookmark }) {
       .eq('id', bookmark.id)
     
     if (error) {
+      toast.error("Something went wrong while deleting bookmark")
       console.error('Error deleting bookmark:', error)
       setIsDeleting(false)
     }

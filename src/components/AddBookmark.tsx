@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 
 import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify'
 
 export function AddBookmark() {
   const [open, setOpen] = useState(false)
@@ -26,9 +27,36 @@ export function AddBookmark() {
         return
     }
 
+    const bookmarks = await supabase.from('bookmarks')
+                    .select("*")
+                    .or(`title.like.${title},url.like.${url}`);
+
+    if(!bookmarks.error){
+      if(bookmarks.data.length > 0){
+        setLoading(false)
+        toast.info("Bookmark with similar name or url already exists")
+        return;
+      }
+    }else{
+      console.error(bookmarks.error)
+      toast.error("Something went wrong while fetching bookmarks")
+      return;
+    }
+
+    // validate inputs
+    if(title.length > 20 ){ 
+      toast.error("Title should be less than 20 characters")
+      setLoading(false)
+      return;
+    }else if(url.length > 50){
+      toast.error("URL should be less than 50 characters")
+      setLoading(false)
+      return;
+    }
+
     const { error } = await supabase.from('bookmarks').insert({
-      title,
-      url,
+      title: title.trim(),
+      url: url.trim(),
       user_id: user.id
     })
 
@@ -39,7 +67,7 @@ export function AddBookmark() {
       setOpen(false)
       router.refresh()
     } else {
-        console.error(error)
+        toast.error("Something went wrong while adding bookmark")
     }
   }
 

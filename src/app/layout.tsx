@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Bookmark App",
+  title: "Bookmarker",
   description: "Real-time bookmark manager built with Next.js and Supabase",
 };
 

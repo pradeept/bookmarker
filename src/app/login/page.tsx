@@ -2,11 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 
-export default async function Login({
-  searchParams,
-}: {
-  searchParams: Promise<{ message: string }>
-}) {
+export default async function Login() {
   const supabase = await createClient()
   
   const {
@@ -33,6 +29,10 @@ export default async function Login({
       },
     })
 
+    if(error){
+      console.error(error)
+    }
+
     if (data.url) {
       redirect(data.url)
     }
@@ -42,7 +42,8 @@ export default async function Login({
     <div className="flex h-screen w-full items-center justify-center bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
       <div className="w-full max-w-md space-y-8 px-4 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-2xl bg-white p-10 shadow-xl dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-yellow-500 to-green-500"></div>
+            <div className="absolute top-0 left-0 w-full h-1 bg-blue-500"></div>
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-blue-500"></div>
           <div className="flex flex-col items-center">
             <h2 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
               Bookmarker 🏷️
